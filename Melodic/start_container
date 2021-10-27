@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Container variables. Edit them on your system.
+# Name of the user that will execute commands inside the container. Ideal-
+# ly this should be set to your user of the host machine.
+USER_NAME="padula"
+# Workspace that will be mapped to container
+HOMEWS="/home/padula/Projects/ROS/Melodic/Projects/"
+# Image that will be used to create the container
+IMG_NAME="development:nvidiamelodic"
+# UID AND GID of the user
+USER_UID=`id -u $USER_NAME`
+USER_GID=`id -g $USER_NAME`
+# X routing
+xhost +local:root
+
+# Running container
+nvidia-docker run -it \
+    --rm \
+    --user=$USER_UID:$USER_GID \
+    --ipc=host \
+    --env="DISPLAY=$DISPLAY" \
+    --env="QT_X11_NO_MITSHM=1" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --volume="$HOMEWS:/home/$USER_NAME/:rw" \
+    --workdir="/home/$USER_NAME/" \
+    --name "Melodic" \
+    $IMG_NAME \
+    bash
+    # bash
+# nvidia-docker run -it \
+#     --name="lara" \
+#     --net="host" \
+#     --privileged \
+#     --env="ROS_MASTER_URI=$ROS_MASTER_URI" \
+#     --env="DISPLAY=$DISPLAY" \
+#     --env="QT_X11_NO_MITSHM=1" \
+#     --volume="$XAUTH:$XAUTH" \
+#     --rm \
+#     --workdir="/opt/athome_ws" \
+#     --volume="$HOME:$HOME" \
+#     --volume="/media:/media" \
+#     --volume="$BAGS_DIR:/opt/bags" \
+#     --volume="/etc/group:/etc/group:ro" \
+#     --volume="/etc/passwd:/etc/passwd:ro" \
+#     --volume="/etc/shadow:/etc/shadow:ro" \
+#     --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+#     --volume="/etc/serial/:/dev/serial/:rw" \
+#     --volume="/etc/modprobe.d/:/etc/modprobe.d/:rw" \
+#     --volume="$HOMEWS:/opt/athome_ws:rw" \
+#     --group-add audio \
+#     --device /dev/snd \
+#     gnardari/athome_lara:latest \
+#     bash
