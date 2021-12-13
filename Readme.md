@@ -37,13 +37,13 @@ On older ROS versions (like Melodic) you may get package installation errors. Ju
 ### Running cointainers
 - Running ROS Noetic:
 ```console
-./start_container noetic
+./start noetic
 ```
 - Running ROS Melodic:
 ```console
-./start_container melodic
+./start melodic
 ```
 - Running ROS Noetic and specifying a different projects folder:
 ```console
-./start_container noetic ~/Projects
+./start noetic ~/Projects
 ```

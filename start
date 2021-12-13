@@ -6,7 +6,7 @@ USER_NAME=$USER
 # Image that will be used to create the container
 IMG_NAME="development:"${1}
 # Workspace that will be mapped to container
-HOMEWS=${2:-$(pwd)"/"${1^}"/Projects/"}
+HOMEWS=${2:-$(pwd)"/"${1^}"_Projects/"}
 # UID AND GID of the user
 USER_UID=`id -u $USER_NAME`
 USER_GID=`id -g $USER_NAME`
