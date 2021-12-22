@@ -7,6 +7,9 @@ ARG uid
 ARG gid
 ARG locale
 
+# Fix so the user can use the webcam
+RUN groupmod -g 986 video
+
 # Creating user and group into the container and adding it to the sudoers
 RUN useradd -u $uid $username
 RUN groupmod -g $gid $username
@@ -35,8 +38,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     iputils-ping \
     ros-pcl-msgs \
-    python3-pcl \
-    python3-pcl-msgs \
+    # python3-pcl \
+    # python3-pcl-msgs \
     libpcl-msgs-dev \
     libpcl-conversions-dev \
     ros-${ROS_DISTRO}-turtlebot3 \
@@ -48,7 +51,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # Installing tmuxinator to manage tmux project sesions
-run gem install tmuxinator
+# run gem install tmuxinator
 
 # nvidia-docker hooks
 LABEL com.nvidia.volumes.needed="nvidia_driver"

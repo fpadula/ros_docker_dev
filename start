@@ -19,17 +19,20 @@ echo "Mouting host folder '$HOMEWS' to '/home/$USER_NAME/' in the container"
 # if nvidia-docker is available then run it
 if ! command -v nvidia-docker &> /dev/null
 then
-    echo "Using 'nvidia-docker' to run container"
+    echo "Using 'docker' to run container"
     DOCKER_EXEC=docker
 else
-    echo "Using 'docker' to run container"
+    echo "Using 'nvidia-docker' to run container"
     DOCKER_EXEC=nvidia-docker
 fi
 
 # Running container
 $DOCKER_EXEC run -it \
     --rm \
+    --privileged \
     --user=$USER_UID:$USER_GID \
+    --group-add audio \
+    --group-add video \
     --ipc=host \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
