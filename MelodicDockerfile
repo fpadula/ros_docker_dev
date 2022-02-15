@@ -27,7 +27,7 @@ ENV EDITOR vim
 ENV TZ=$locale
 # ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 # Installing needed packages
 RUN apt-get update && apt-get install -y \
     neovim \
@@ -52,6 +52,15 @@ RUN apt-get update && apt-get install -y \
 
 # Installing tmuxinator to manage tmux project sesions
 # run gem install tmuxinator
+
+# Installing needed packages
+RUN apt-get update && apt-get install -y \
+    python-tk \
+    ros-melodic-usb-cam* \
+    ros-melodic-cv-camera \
+    ros-melodic-rqt-joint-trajectory-controller \
+    ros-melodic-imagezero-image-transport &&\
+    rm -rf /var/lib/apt/lists/*
 
 # nvidia-docker hooks
 LABEL com.nvidia.volumes.needed="nvidia_driver"

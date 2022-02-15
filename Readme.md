@@ -12,7 +12,7 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
--t development:noetic .
+-t development:noetic -f NoeticDockerfile .
 ```
 
 - Building ROS Melodic:
@@ -23,7 +23,7 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
--t development:melodic .
+-t development:melodic -f MelodicDockerfile .
 ```
 
 ---
@@ -35,6 +35,9 @@ On older ROS versions (like Melodic) you may get package installation errors. Ju
 
 
 ### Running cointainers
+
+The `start` script will auto-mount either the Melodic_Projects or the Noetic_Projects (depending on the argument) on the inside the container home folder. Note that everytime will exit the container will be destroyed, but any changes made to the projects folders will persist.
+
 - Running ROS Noetic:
 ```console
 ./start noetic
@@ -42,8 +45,4 @@ On older ROS versions (like Melodic) you may get package installation errors. Ju
 - Running ROS Melodic:
 ```console
 ./start melodic
-```
-- Running ROS Noetic and specifying a different projects folder:
-```console
-./start noetic ~/Projects
 ```

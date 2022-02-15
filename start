@@ -36,6 +36,7 @@ $DOCKER_EXEC run -it \
     --ipc=host \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
+    --env="ROS_IP=127.0.0.1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --workdir="/home/$USER_NAME/" \
