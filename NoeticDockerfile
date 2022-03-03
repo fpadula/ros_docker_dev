@@ -71,6 +71,15 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-fiducials \
     && rm -rf /var/lib/apt/lists/*
 
+
+#Melfa camera calibration stuff
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ros-noetic-vision-visp \
+    ros-noetic-realsense2-camera \
+    ros-noetic-tf2-sensor-msgs \
+    python3-catkin-tools \
+    && rm -rf /var/lib/apt/lists/*
+
 # Installing tmuxinator to manage tmux project sesions
 # run gem install tmuxinator
 

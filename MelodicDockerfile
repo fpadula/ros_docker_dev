@@ -59,6 +59,8 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-usb-cam* \
     ros-melodic-cv-camera \
     ros-melodic-rqt-joint-trajectory-controller \
+    python-wstool \
+    python-catkin-tools \
     ros-melodic-imagezero-image-transport &&\
     rm -rf /var/lib/apt/lists/*
 
