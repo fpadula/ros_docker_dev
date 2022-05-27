@@ -78,6 +78,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-realsense2-camera \
     ros-noetic-tf2-sensor-msgs \
     python3-catkin-tools \
+    ros-noetic-ros-numpy \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing tmuxinator to manage tmux project sesions

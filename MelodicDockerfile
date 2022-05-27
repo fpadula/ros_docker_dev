@@ -61,7 +61,23 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-rqt-joint-trajectory-controller \
     python-wstool \
     python-catkin-tools \
+    python-pip \
+    software-properties-common \
     ros-melodic-imagezero-image-transport &&\
+    rm -rf /var/lib/apt/lists/*
+
+# ICRA2022
+RUN apt-get update && apt-get install -y \
+    ros-melodic-socketcan-interface \
+    ros-melodic-four-wheel-steering-msgs \
+    python-pymodbus \
+    ros-melodic-soem \
+    ros-melodic-urdf-geometry-parser &&\
+    rm -rf /var/lib/apt/lists/*
+RUN pip2 install -U transforms3d
+RUN add-apt-repository ppa:freecad-maintainers/freecad-stable -y && apt-get update && apt install -y \
+    ros-melodic-industrial-msgs \
+    freecad-python2  &&\
     rm -rf /var/lib/apt/lists/*
 
 # nvidia-docker hooks

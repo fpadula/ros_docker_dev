@@ -41,5 +41,6 @@ $DOCKER_EXEC run -it \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --workdir="/home/$USER_NAME/" \
     --network host \
+    --name ${1}"development" \
     $IMG_NAME \
     bash
