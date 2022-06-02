@@ -14,7 +14,7 @@ USER_GID=`id -g $USER_NAME`
 xhost +local:root
 
 # Syncronizing configs:
-rsync -rtu $(pwd)/shared_configs/ ${HOMEWS}
+cp -r $(pwd)/shared_configs/. ${HOMEWS}
 
 echo "Using '$USER' as username, with UID=$USER_UID and GUID=$USER_GID"
 echo "Mouting host folder '$HOMEWS' to '/home/$USER_NAME/' in the container"
