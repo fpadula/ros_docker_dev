@@ -13,6 +13,9 @@ USER_GID=`id -g $USER_NAME`
 # X routing
 xhost +local:root
 
+# Syncronizing configs:
+rsync -rtu $(pwd)/shared_configs/ ${HOMEWS}
+
 echo "Using '$USER' as username, with UID=$USER_UID and GUID=$USER_GID"
 echo "Mouting host folder '$HOMEWS' to '/home/$USER_NAME/' in the container"
 
@@ -37,6 +40,7 @@ $DOCKER_EXEC run -it \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --env="ROS_IP=127.0.0.1" \
+    --env="TERM=xterm-256color" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --workdir="/home/$USER_NAME/" \
