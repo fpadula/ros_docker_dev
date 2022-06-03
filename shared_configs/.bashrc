@@ -63,4 +63,4 @@ function parse_git_dirty {
 	fi
 }
 
-export PS1="\[\e[${COL_USR}m\]\u\[\e[m\]\[\e[${COL_USR}m\]@\[\e[m\]\[\e[${COL_USR}m\]Melodic\[\e[m\] \[\e[${COL_DIR}m\]\W\[\e[m\] \[\e[${COL_GIT}m\]\`parse_git_branch\`\[\e[m\] \n\[\e[${COL_CUR}m\]\\$\[\e[m\] "
+export PS1="\[\e[${COL_USR}m\]\u\[\e[m\]\[\e[${COL_USR}m\]@\[\e[m\]\[\e[${COL_USR}m\]${ROS_DISTRO^}\[\e[m\] \[\e[${COL_DIR}m\]\W\[\e[m\] \[\e[${COL_GIT}m\]\`parse_git_branch\`\[\e[m\] \n\[\e[${COL_CUR}m\]\\$\[\e[m\] "
