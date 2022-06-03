@@ -1,7 +1,7 @@
-source ~/.git-prompt.sh
 alias clipboard='xclip -sel clip'
 alias aws='{ { source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null ; } && echo Workspace sourced successfully ; } || echo Error sourcing Workspace'
 source /opt/ros/${ROS_DISTRO}/setup.bash
+source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null
 export HISTSIZE=10000
 export HISTFILESIZE=10000
 export GAZEBO_MODEL_PATH=~/GazeboModels/gazebo_models:${GAZEBO_MODEL_PATH}
