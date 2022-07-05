@@ -79,6 +79,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-tf2-sensor-msgs \
     python3-catkin-tools \
     ros-noetic-ros-numpy \
+    ros-noetic-navigation \
+    ros-noetic-robot-pose-ekf \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing tmuxinator to manage tmux project sesions

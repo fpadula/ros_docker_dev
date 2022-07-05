@@ -27,6 +27,9 @@ ENV EDITOR vim
 ENV TZ=$locale
 # ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update && apt-get install -y \
+    curl &&\
+    rm -rf /var/lib/apt/lists/*
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 # Installing needed packages
 RUN apt-get update && apt-get install -y \
@@ -77,6 +80,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip2 install -U transforms3d
 RUN add-apt-repository ppa:freecad-maintainers/freecad-stable -y && apt-get update && apt install -y \
     ros-melodic-industrial-msgs \
+    ros-melodic-trac-ik-kinematics-plugin \
     freecad-python2  &&\
     rm -rf /var/lib/apt/lists/*
 

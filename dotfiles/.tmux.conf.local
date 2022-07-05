@@ -426,3 +426,6 @@ bind -n S-Down select-pane -D
 # Window navigation
 bind-key -n M-Left previous-window 
 bind-key -n M-Right next-window 
+
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @yank_action 'copy-pipe-no-clear'

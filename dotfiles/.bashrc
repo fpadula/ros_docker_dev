@@ -1,7 +1,11 @@
 alias clipboard='xclip -sel clip'
-alias aws='{ { source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null ; } && echo Workspace sourced successfully ; } || echo Error sourcing Workspace'
+alias aws='{ { source ../../devel/setup.bash &> /dev/null || source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null ; } && echo Workspace sourced successfully ; } || echo Error sourcing Workspace'
+
+alias rl='roslaunch $(basename $(pwd)) '
+alias rr='rosrun $(basename $(pwd)) '
+
 source /opt/ros/${ROS_DISTRO}/setup.bash
-source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null
+source ../../devel/setup.bash &> /dev/null || source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null
 export HISTSIZE=10000
 export HISTFILESIZE=10000
 export GAZEBO_MODEL_PATH=~/GazeboModels/gazebo_models:${GAZEBO_MODEL_PATH}
@@ -64,3 +68,5 @@ function parse_git_dirty {
 }
 
 export PS1="\[\e[${COL_USR}m\]\u\[\e[m\]\[\e[${COL_USR}m\]@\[\e[m\]\[\e[${COL_USR}m\]${ROS_DISTRO^}\[\e[m\] \[\e[${COL_DIR}m\]\W\[\e[m\] \[\e[${COL_GIT}m\]\`parse_git_branch\`\[\e[m\] \n\[\e[${COL_CUR}m\]\\$\[\e[m\] "
+
+source venv/bin/activate &> /dev/null || source ../venv/bin/activate &> /dev/null || source ../../venv/bin/activate &> /dev/null || source ../../../venv/bin/activate &> /dev/null
