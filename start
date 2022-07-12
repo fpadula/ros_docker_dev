@@ -6,10 +6,15 @@ USER_NAME=$USER
 # Image that will be used to create the container
 IMG_NAME="development:"${1}
 # Workspace that will be mapped to container
-HOMEWS=${2:-$(pwd)"/"${1^}"_Projects/"}
+HOMEWS=$(pwd)"/"${1^}"_Projects/"
+# HOMEWS=${2:-$(pwd)"/"${1^}"_Projects/"}
 # UID AND GID of the user
 USER_UID=`id -u $USER_NAME`
 USER_GID=`id -g $USER_NAME`
+
+# If argument 2 is passed, run it. If not, run bash
+COMMAND=${2:-bash}
+
 # X routing
 xhost +local:root
 
@@ -47,4 +52,4 @@ $DOCKER_EXEC run -it \
     --network host \
     --name ${1}"development" \
     $IMG_NAME \
-    bash
+    $COMMAND

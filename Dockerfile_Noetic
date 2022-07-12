@@ -28,8 +28,9 @@ ENV TZ=$locale
 # ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Installing needed packages
-RUN apt-get update && apt-get install -y \
+# Base packages
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    terminator \
     neovim \
     git \
     xclip \
@@ -38,25 +39,37 @@ RUN apt-get update && apt-get install -y \
     unzip \
     iputils-ping \
     python-is-python3 \
-    ros-pcl-msgs \
-    python3-pcl \
-    python3-pcl-msgs \
-    libpcl-msgs-dev \
-    libpcl-conversions-dev \
-    ros-${ROS_DISTRO}-rviz-imu-plugin \
-    ros-${ROS_DISTRO}-turtlebot3 \
-    ros-${ROS_DISTRO}-openslam-gmapping \
-    ros-${ROS_DISTRO}-navigation \
+    ros-${ROS_DISTRO}-moveit* \
     ros-${ROS_DISTRO}-ros-control* \
     ros-${ROS_DISTRO}-control* \
-    ros-${ROS_DISTRO}-moveit* \
+    python3-pip \
+    ros-noetic-ros-numpy \
+    ros-noetic-tf2-sensor-msgs \
+    python3-catkin-tools \    
+    python3-virtualenv \
+    && rm -rf /var/lib/apt/lists/*
+
+# PCL packages
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ros-pcl-msgs \
+    libpcl-msgs-dev \
+    libpcl-conversions-dev \
+    python3-pcl \
+    python3-pcl-msgs \
+    ros-${ROS_DISTRO}-rviz-imu-plugin \
+    && rm -rf /var/lib/apt/lists/*
+
+# Navigation
+RUN apt-get update && apt-get install -y \    
+    ros-${ROS_DISTRO}-openslam-gmapping \
+    ros-${ROS_DISTRO}-navigation \
+    ros-noetic-robot-pose-ekf \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing aditional packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3-wxgtk4.0 \
     python3-igraph \
-    python3-pip \
     python3-tk \
     python-wxtools \
     libspqr2 \
@@ -71,20 +84,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-fiducials \
     && rm -rf /var/lib/apt/lists/*
 
-
-#Melfa camera calibration stuff
+# Camera related packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-vision-visp \
     ros-noetic-realsense2-camera \
-    ros-noetic-tf2-sensor-msgs \
-    python3-catkin-tools \
-    ros-noetic-ros-numpy \
-    ros-noetic-navigation \
-    ros-noetic-robot-pose-ekf \
     && rm -rf /var/lib/apt/lists/*
-
-# Installing tmuxinator to manage tmux project sesions
-# run gem install tmuxinator
 
 # nvidia-docker hooks
 LABEL com.nvidia.volumes.needed="nvidia_driver"

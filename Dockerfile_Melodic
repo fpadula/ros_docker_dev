@@ -31,8 +31,10 @@ RUN apt-get update && apt-get install -y \
     curl &&\
     rm -rf /var/lib/apt/lists/*
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-# Installing needed packages
+
+# Base packages
 RUN apt-get update && apt-get install -y \
+    terminator \
     neovim \
     git \
     xclip \

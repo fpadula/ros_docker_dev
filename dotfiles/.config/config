@@ -1,0 +1,19 @@
+[global_config]
+[keybindings]
+[profiles]
+  [[default]]
+    background_color = "#263238"
+    cursor_color = "#aaaaaa"
+    foreground_color = "#f0fffe"
+    login_shell = True
+    use_custom_command = True
+    custom_command = /bin/bash
+[layouts]
+  [[default]]
+    [[[window0]]]
+      type = Window
+      parent = ""
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+[plugins]

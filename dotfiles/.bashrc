@@ -14,6 +14,10 @@ alias aenv='source venv*/bin/activate'
 export LIBDYNAMIXEL="$HOME/libraries/libdynamixel_install/"
 export PATH="$HOME/.local/bin:$PATH"
 # export PS1='\[\e[1;38;5;41m\]\u@${ROS_DISTRO^} \[\e[1;38;5;214m\]\W\[\e[1;38;5;74m\]$(__git_ps1) \[\e[1;38;5;214m\]\$\[\e[00m\] '
+
+# Set window title for terminator
+echo -en "\e]2;ROS ${ROS_DISTRO^} container\a"
+
 ## Define all the colors
 COL_USR='1;38;5;41'
 COL_DIR='1;38;5;214'
