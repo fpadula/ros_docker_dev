@@ -90,6 +90,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-realsense2-camera \
     && rm -rf /var/lib/apt/lists/*
 
+# Misc
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ros-noetic-trac-ik-kinematics-plugin \
+    gdb \
+    ros-noetic-sensor-filters \
+    && rm -rf /var/lib/apt/lists/*
+
 # nvidia-docker hooks
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}

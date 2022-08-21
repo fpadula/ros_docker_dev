@@ -12,7 +12,7 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
--t development:noetic -f NoeticDockerfile .
+-t development:noetic -f Dockerfile_Noetic .
 ```
 
 - Building ROS Melodic:
@@ -23,7 +23,7 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
--t development:melodic -f MelodicDockerfile .
+-t development:melodic -f Dockerfile_Melodic .
 ```
 
 ---
