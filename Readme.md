@@ -26,6 +26,17 @@ docker build \
 -t development:melodic -f Dockerfile_Melodic .
 ```
 
+- Building ROS Kinetic:
+```console
+docker build \
+--build-arg locale=America/Sao_Paulo \
+--build-arg base_ros_img=osrf/ros:kinetic-desktop-full \
+--build-arg username=$USER \
+--build-arg uid=$UID \
+--build-arg gid=$(id -g ${USER}) \
+-t development:kinetic -f Dockerfile_Kinetic .
+```
+
 ---
 
 

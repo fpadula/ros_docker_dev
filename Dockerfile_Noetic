@@ -95,6 +95,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ros-noetic-trac-ik-kinematics-plugin \
     gdb \
     ros-noetic-sensor-filters \
+    libmuparser-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # nvidia-docker hooks
