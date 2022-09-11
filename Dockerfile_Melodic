@@ -79,7 +79,7 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-soem \
     ros-melodic-urdf-geometry-parser &&\
     rm -rf /var/lib/apt/lists/*
-RUN pip2 install -U transforms3d
+# RUN pip2 install -U transforms3d
 RUN add-apt-repository ppa:freecad-maintainers/freecad-stable -y && apt-get update && apt install -y \
     ros-melodic-industrial-msgs \
     ros-melodic-trac-ik-kinematics-plugin \
