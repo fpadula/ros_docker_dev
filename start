@@ -39,9 +39,9 @@ $DOCKER_EXEC run -it \
     --rm \
     --privileged \
     --user=$USER_UID:$USER_GID \
-    --group-add audio \
-    --group-add video \
     --ipc=host \
+    --group-add video \
+    --group-add audio \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --env="ROS_IP=127.0.0.1" \

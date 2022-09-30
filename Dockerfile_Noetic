@@ -6,9 +6,12 @@ ARG username
 ARG uid
 ARG gid
 ARG locale
+ARG videoid
+ARG audioid
 
 # Fix so the user can use the webcam
-RUN groupmod -g 986 video
+RUN groupmod -g $videoid video
+RUN groupmod -g $audioid audio
 
 # Creating user and group into the container and adding it to the sudoers
 RUN useradd -u $uid $username
@@ -60,11 +63,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Navigation
-RUN apt-get update && apt-get install -y \    
-    ros-${ROS_DISTRO}-openslam-gmapping \
-    ros-${ROS_DISTRO}-navigation \
-    ros-noetic-robot-pose-ekf \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \    
+#     ros-${ROS_DISTRO}-openslam-gmapping \
+#     ros-${ROS_DISTRO}-navigation \
+#     ros-noetic-robot-pose-ekf \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Installing aditional packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \

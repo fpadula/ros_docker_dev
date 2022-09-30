@@ -7,11 +7,13 @@ If needed, modify the variables `locale` (e.g. `Pacific/Auckland`, `America/Sao_
 - Building ROS Noetic:
 ```console
 docker build \
---build-arg locale=America/Sao_Paulo \
+--build-arg locale=Pacific/Auckland \
 --build-arg base_ros_img=osrf/ros:noetic-desktop-full \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
+--build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
+--build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
 -t development:noetic -f Dockerfile_Noetic .
 ```
 
@@ -23,6 +25,8 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
+--build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
+--build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
 -t development:melodic -f Dockerfile_Melodic .
 ```
 
@@ -34,6 +38,8 @@ docker build \
 --build-arg username=$USER \
 --build-arg uid=$UID \
 --build-arg gid=$(id -g ${USER}) \
+--build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
+--build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
 -t development:kinetic -f Dockerfile_Kinetic .
 ```
 
