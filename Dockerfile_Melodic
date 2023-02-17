@@ -7,11 +7,12 @@ ARG uid
 ARG gid
 ARG locale
 ARG videoid
-ARG audioid
+ARG dialoutid
 
 # Fix so the user can use the webcam
 RUN groupmod -g $videoid video
 RUN groupmod -g $audioid audio
+RUN groupmod -g $dialoutid audio
 
 # Creating user and group into the container and adding it to the sudoers
 RUN useradd -u $uid $username

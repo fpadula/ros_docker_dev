@@ -14,6 +14,7 @@ docker build \
 --build-arg gid=$(id -g ${USER}) \
 --build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
 --build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
+--build-arg dialoutid=$(getent group dialout | awk -F: '{printf "%d", $3}') \
 -t development:noetic -f Dockerfile_Noetic .
 ```
 
@@ -27,6 +28,7 @@ docker build \
 --build-arg gid=$(id -g ${USER}) \
 --build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
 --build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
+--build-arg dialoutid=$(getent group dialout | awk -F: '{printf "%d", $3}') \
 -t development:melodic -f Dockerfile_Melodic .
 ```
 
@@ -40,6 +42,7 @@ docker build \
 --build-arg gid=$(id -g ${USER}) \
 --build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
 --build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
+--build-arg dialoutid=$(getent group dialout | awk -F: '{printf "%d", $3}') \
 -t development:kinetic -f Dockerfile_Kinetic .
 ```
 
