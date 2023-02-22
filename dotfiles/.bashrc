@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything 
+case $- in     *i*) ;;       *) return;; esac
+
 alias clipboard='xclip -sel clip'
 alias aws='{ { source ../../devel/setup.bash &> /dev/null || source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null ; } && echo Workspace sourced successfully ; } || echo Error sourcing Workspace'
 
