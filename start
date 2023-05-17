@@ -51,6 +51,7 @@ $DOCKER_EXEC run -it \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --workdir="/home/$USER_NAME/" \
     --network host \
+    --ulimit nofile=1024:524288 \
     --name ${1}"development" \
     $IMG_NAME \
     $COMMAND
