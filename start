@@ -49,13 +49,15 @@ $DOCKER_EXEC run -it \
     --cap-add=sys_nice \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
-    --env="ROS_IP=192.168.1.4" \
+    --env="ROS_MASTER_URI=$ROS_CONTAINER_MASTER_URI" \
+    --env="ROS_IP=$ROS_CONTAINER_IP" \
     --env="TERM=xterm-256color" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --volume="/dev/snd:/dev/snd" \
     --workdir="/home/$USER_NAME/" \
     --network host \
+    --ulimit nofile=1024:524288 \
     --name ${1}"development" \
     $IMG_NAME \
     $COMMAND
