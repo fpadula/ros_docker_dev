@@ -42,12 +42,18 @@ $DOCKER_EXEC run -it \
     --ipc=host \
     --group-add video \
     --group-add audio \
+    --group-add dialout \
+    --group-add realtime \
+    --ulimit rtprio=99 \
+    --ulimit memlock=102400 \
+    --cap-add=sys_nice \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
-    --env="ROS_IP=127.0.0.1" \
+    --env="ROS_IP=192.168.1.4" \
     --env="TERM=xterm-256color" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
+    --volume="/dev/snd:/dev/snd" \
     --workdir="/home/$USER_NAME/" \
     --network host \
     --name ${1}"development" \

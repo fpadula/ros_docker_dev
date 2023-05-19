@@ -419,13 +419,39 @@ tmux_conf_uninstall_plugins_on_reload=true
 
 #### To make navigation a little bit easier: ####
 # Panel navigation
-bind -n S-Left select-pane -L
-bind -n S-Right select-pane -R
-bind -n S-Up select-pane -U
-bind -n S-Down select-pane -D
+bind-key -n S-Left select-pane -L
+bind-key -n S-Right select-pane -R
+bind-key -n S-Up select-pane -U
+bind-key -n S-Down select-pane -D
 # Window navigation
 bind-key -n M-Left previous-window 
 bind-key -n M-Right next-window 
 
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @yank_action 'copy-pipe-no-clear'
+
+set -g pane-border-status top
+set -g pane-border-format " [ #T ] "
+
+#Set Tmux plugin to resurrect every time workstation restarted (Ctrl+A Ctrl+S to Save / Ctrl+A Ctrl+R to Resurrect)
+set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'spywhere/tmux-named-snapshot'
+# Automatically restore tmux windows when tmux starts.
+# set -g @plugin 'tmux-plugins/tmux-continuum'
+# Don't auto-launch tmx at machine boot.  Give me a chance to gcert first.
+# set -g @continuum-restore 'on'
+# Preserves what was readable in each pane.
+# set -g @continuum-boot 'off'
+set -g @resurrect-capture-pane-contents 'on'
+set -g @resurrect-strategy-vim 'session'
+set -g @resurrect-save-bash-history 'on'
+# run-shell "mkdir -p ~/.tmux/resurrect/#S"
+# set -g @resurrect-dir '/.tmux/resurrect/#S'
+
+set -g @named-snapshot-save 'C-m:manual M:* C-d:dev'
+set -g @named-snapshot-restore 'C-n:manual N:* D:dev'
+
+unbind .
+bind-key . command-prompt "select-pane -T '%%'"

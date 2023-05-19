@@ -3,7 +3,7 @@ alias aws='{ { source ../../devel/setup.bash &> /dev/null || source ../devel/set
 
 alias rl='roslaunch $(basename $(pwd)) '
 alias rr='rosrun $(basename $(pwd)) '
-
+alias roslaunch='roslaunch --disable-title'
 source /opt/ros/${ROS_DISTRO}/setup.bash
 source ../../devel/setup.bash &> /dev/null || source ../devel/setup.bash &> /dev/null || source ./devel/setup.bash &> /dev/null || source ./catkin_ws/devel/setup.bash &> /dev/null
 export HISTSIZE=10000
@@ -16,7 +16,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # export PS1='\[\e[1;38;5;41m\]\u@${ROS_DISTRO^} \[\e[1;38;5;214m\]\W\[\e[1;38;5;74m\]$(__git_ps1) \[\e[1;38;5;214m\]\$\[\e[00m\] '
 
 # Set window title for terminator
-echo -en "\e]2;ROS ${ROS_DISTRO^} container\a"
+# echo -en "\e]2;ROS ${ROS_DISTRO^} container\a"
 
 ## Define all the colors
 COL_USR='1;38;5;41'
@@ -74,3 +74,36 @@ function parse_git_dirty {
 export PS1="\[\e[${COL_USR}m\]\u\[\e[m\]\[\e[${COL_USR}m\]@\[\e[m\]\[\e[${COL_USR}m\]${ROS_DISTRO^}\[\e[m\] \[\e[${COL_DIR}m\]\W\[\e[m\] \[\e[${COL_GIT}m\]\`parse_git_branch\`\[\e[m\] \n\[\e[${COL_CUR}m\]\\$\[\e[m\] "
 
 source venv/bin/activate &> /dev/null || source ../venv/bin/activate &> /dev/null || source ../../venv/bin/activate &> /dev/null || source ../../../venv/bin/activate &> /dev/null
+
+### Saving tmux panel history:
+
+# Create history directory if it doesn't exist
+if tmux display-message -p '#S' &> /dev/null; then
+	# "Inside of a tmux session!"
+	HISTS_DIR=$HOME/.bash_history.d/$(tmux display-message -p '#S')
+else
+	# "Outside of a tmux session!"
+	HISTS_DIR=$HOME/.bash_history.d
+fi
+mkdir -p "${HISTS_DIR}"
+
+if [ -n "${TMUX_PANE}" ]; then
+
+  # Check if we've already set this pane title
+  pane_id=$(tmux display -pt "${TMUX_PANE:?}" "#{pane_title}" | sed 's/ //g') 
+#   if [[ $pane_id != "$pane_id_prefix"* ]]; then
+
+#     # if not, set it to a random ID
+#     random_id=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
+#     printf "\033]2;$pane_id_prefix$random_id\033\\"
+#     pane_id=$(tmux display -pt "${TMUX_PANE:?}" "#{pane_title}")
+#   fi
+
+  # use the pane's random ID for the HISTFILE
+  export HISTFILE="${HISTS_DIR}/bash_history_tmux_${pane_id}"
+else
+  export HISTFILE="${HISTS_DIR}/bash_history_no_tmux"
+fi
+
+export PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'history -a; history -n'
+export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages/"

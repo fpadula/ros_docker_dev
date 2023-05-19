@@ -7,18 +7,22 @@ ARG uid
 ARG gid
 ARG locale
 ARG videoid
+ARG audioid
 ARG dialoutid
+ARG realtimeid
 
-# Fix so the user can use the webcam
-RUN groupmod -g $videoid video
-RUN groupmod -g $audioid audio
-RUN groupmod -g $dialoutid audio
-
+RUN groupadd -g $realtimeid realtime
 # Creating user and group into the container and adding it to the sudoers
 RUN useradd -u $uid $username
 RUN groupmod -g $gid $username
 RUN echo $username:$username | chpasswd
 RUN echo $username 'ALL=(ALL) ALL' >> /etc/sudoers
+
+# Adding user to necessary groups
+RUN usermod -a -G video $username
+RUN usermod -a -G audio $username
+RUN usermod -a -G dialout $username
+RUN usermod -a -G realtime $username
 
 # Setting container starting directory
 WORKDIR /home/$username
@@ -51,13 +55,13 @@ RUN apt-get update && apt-get install -y \
     # python3-pcl-msgs \
     libpcl-msgs-dev \
     libpcl-conversions-dev \
-    ros-${ROS_DISTRO}-turtlebot3 \
-    ros-${ROS_DISTRO}-openslam-gmapping \
-    ros-${ROS_DISTRO}-navigation \
     ros-${ROS_DISTRO}-ros-control* \
     ros-${ROS_DISTRO}-control* \
-    ros-${ROS_DISTRO}-moveit* &&\
+    ros-${ROS_DISTRO}-moveit &&\
     rm -rf /var/lib/apt/lists/*
+    # ros-${ROS_DISTRO}-turtlebot3 \
+    # ros-${ROS_DISTRO}-openslam-gmapping \
+    # ros-${ROS_DISTRO}-navigation \
 
 # Installing tmuxinator to manage tmux project sesions
 # run gem install tmuxinator
