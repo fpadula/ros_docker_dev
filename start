@@ -12,6 +12,13 @@ HOMEWS=$(pwd)"/"${1^}"_Projects/"
 USER_UID=`id -u $USER_NAME`
 USER_GID=`id -g $USER_NAME`
 
+# If running in a realtime capable kernel, add the realtime group 
+if uname -r | grep -q 'rt'; then
+  RT_FLAG="--group-add realtime"
+else
+  RT_FLAG=""
+fi
+
 # If argument 2 is passed, run it. If not, run bash
 COMMAND=${2:-bash}
 
@@ -35,6 +42,7 @@ else
 fi
 
 # Running container
+#    --group-add realtime \
 $DOCKER_EXEC run -it \
     --rm \
     --privileged \
@@ -43,7 +51,7 @@ $DOCKER_EXEC run -it \
     --group-add video \
     --group-add audio \
     --group-add dialout \
-    --group-add realtime \
+    ${RT_FLAG} \
     --ulimit rtprio=99 \
     --ulimit memlock=102400 \
     --cap-add=sys_nice \
