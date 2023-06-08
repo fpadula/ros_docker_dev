@@ -19,6 +19,7 @@ else
   RT_FLAG=""
 fi
 
+RT_FLAG=""
 # If argument 2 is passed, run it. If not, run bash
 COMMAND=${2:-bash}
 
@@ -63,6 +64,7 @@ $DOCKER_EXEC run -it \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="$HOMEWS:/home/$USER_NAME/:rw" \
     --volume="/dev/:/dev/" \
+    --volume="/etc/udev/:/etc/udev/" \
     --workdir="/home/$USER_NAME/" \
     --network host \
     --ulimit nofile=1024:524288 \
