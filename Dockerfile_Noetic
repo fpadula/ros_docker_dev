@@ -13,7 +13,7 @@ ARG dialoutid
 # Fix so the user can use the webcam
 RUN groupmod -g $videoid video
 RUN groupmod -g $audioid audio
-RUN groupmod -g $dialoutid audio
+RUN groupmod -g $dialoutid dialout
 
 # Creating user and group into the container and adding it to the sudoers
 RUN useradd -u $uid $username
@@ -44,7 +44,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     unzip \
     iputils-ping \
     python-is-python3 \
-    ros-${ROS_DISTRO}-moveit* \
+    ros-${ROS_DISTRO}-moveit \
     ros-${ROS_DISTRO}-ros-control* \
     ros-${ROS_DISTRO}-control* \
     python3-pip \

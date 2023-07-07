@@ -18,6 +18,7 @@ alias aenv='source venv*/bin/activate'
 export LIBDYNAMIXEL="$HOME/libraries/libdynamixel_install/"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Qt/Tools/QtCreator/bin:$PATH"
+export ANACONDA_INSTALL_PATH="$ANACONDA_INSTALL_PATH"
 
 ## Define all the colors
 COL_USR='1;38;5;41'
@@ -96,4 +97,19 @@ else
 fi
 
 export PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'history -a; history -n'
-export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages/"
+#export PYTHONPATH="$PYTHONPATH:/usr/lib/python3/dist-packages/"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$ANACONDA_INSTALL_PATH/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$ANACONDA_INSTALL_PATH/etc/profile.d/conda.sh" ]; then
+        . "$ANACONDA_INSTALL_PATH/etc/profile.d/conda.sh"
+    else
+        export PATH="$ANACONDA_INSTALL_PATH/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<

@@ -2,7 +2,7 @@
 
 ### Building the container image
 
-If needed, modify the variables `locale` (e.g. `Pacific/Auckland`, `America/Sao_Paulo`, etc) and `base_ros_img` (e.g. `osrf/ros:noetic-desktop-full`, `osrf/ros:melodic-desktop-full`, etc).
+If needed, modify the variables `locale` (e.g. `Pacific/Auckland`, `America/Sao_Paulo`, etc) and `base_ros_img` (e.g. `osrf/ros:noetic-desktop-full`, `osrf/ros:melodic-desktop-full`, etc). Note that you can change the name of the images (`development:noetic`, `development:melodic`, etc) to whatever you want. Just make sure to keep track of the name so that it can latter be used by the `start` script.
 
 - Building ROS Noetic:
 ```console
@@ -56,26 +56,28 @@ The `start` script will start a ROS container and auto-mount either the Melodic_
 
 The user password for the container is the same as the username. So if the username inside the container is `ros_pc`, the password will be `ros_pc`.
 
-Running the `start` script with only the distro type as argument will start a bash shell inside the container.
+Run `./start -h` to get details about the parameters.
 
-The start script will read the environment variables `ROS_CONTAINER_MASTER_URI` and `ROS_CONTAINER_IP` for assigning the env. variables `ROS_MASTER_URI` and `ROS_IP` inside the container respectively. You can set these variables anywhere you want. For the examples listed bellow, we'll assign the variables when running the commands.
-
-For both examples bellow, the ros master node is being run on the PC with ip `192.168.1.4`. The IP of the PC running the container is `192.168.1.10`.
+For the examples bellow, we will assume that the ros master node is being run on the PC with ip `192.168.1.4`, while the IP of the PC running the container is `192.168.1.10`.
 
 - Running ROS Noetic:
 ```console
-ROS_CONTAINER_MASTER_URI=http://192.168.1.4:11311 ROS_CONTAINER_IP=192.168.1.10 ./start noetic
+./start development:noetic --homedir ./Noetic_Projects/ --name noetic_devel --rosip 192.168.1.10 --rosmasteruri http://192.168.1.4:11311
 ```
+
 - Running ROS Melodic:
 ```console
-ROS_CONTAINER_MASTER_URI=http://192.168.1.4:11311 ROS_CONTAINER_IP=192.168.1.10 ./start melodic
+./start development:melodic --homedir ./Melodic_Projects/ --name melodic_devel --rosip 192.168.1.10 --rosmasteruri http://192.168.1.4:11311
 ```
 
-If a second argument is passed to `start`, it will attempt to run it as a command instead of running bash. This is useful if you wish to run a graphical terminal emulator (like `terminator`):
-
-- Running terminator inside ROS Noetic:
+- Running ROS Noetic with terminator as the terminal:
 ```console
-ROS_CONTAINER_MASTER_URI=http://192.168.1.4:11311 ROS_CONTAINER_IP=192.168.1.10 ./start noetic terminator
+./start development:noetic --homedir ./Noetic_Projects/ --name noetic_devel --rosip 192.168.1.10 --rosmasteruri http://192.168.1.4:11311 --exec terminator
+```
+
+- Running ROS Melodic with terminator as the terminal:
+```console
+./start development:melodic --homedir ./Melodic_Projects/ --name melodic_devel --rosip 192.168.1.10 --rosmasteruri http://192.168.1.4:11311 --exec terminator
 ```
 
 ## run
