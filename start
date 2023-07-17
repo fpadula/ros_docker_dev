@@ -61,6 +61,13 @@ def main():
         action="store_true",
     )
 
+    parser.add_argument(
+        "-ic",
+        dest="ic",
+        help="Don't sync configs in dotfile folder into the workspace.",
+        action="store_true",
+    )
+
     parsed, unknown = parser.parse_known_args()
 
     img_name = parsed.img_name[0]
@@ -77,8 +84,8 @@ def main():
     else:
         name = parsed.name
 
+    curr_dir = get_cmd_output("pwd")
     if not parsed.homedir:
-        curr_dir = get_cmd_output("pwd")
         homedir = f"{curr_dir}/{img_name.capitalize()}_Projects/"
     else:
         homedir = abspath(expanduser(parsed.homedir)) + "/"
@@ -96,6 +103,11 @@ def main():
     print(f"User UID: {user_uid}")
     print(f"User GID: {user_gid}")
     print(f"Command to execute: {exec_cmd}")
+
+    # Syncinc dotfile folder:
+    if not parsed.ic:
+        cmd_str = f"cp -r {curr_dir}/dotfiles/. {homedir}"
+        run(cmd_str.split())
 
     cmd_str = f"{docker_type} run -it "
     cmd_str += "--rm "
