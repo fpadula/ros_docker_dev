@@ -117,6 +117,7 @@ def main():
     cmd_str += "--group-add video "
     cmd_str += "--group-add audio "
     cmd_str += "--group-add dialout "
+    cmd_str += "--group-add uucp "
     if has_rt:
         cmd_str += "--group-add realtime "
     cmd_str += "--ulimit rtprio=99 "

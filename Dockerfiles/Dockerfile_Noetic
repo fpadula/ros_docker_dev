@@ -1,0 +1,59 @@
+ARG base_ros_img
+
+FROM $base_ros_img
+
+ARG username
+ARG uid
+ARG gid
+ARG locale
+ARG videoid
+ARG audioid
+ARG uucpid=""
+ARG dialoutid=""
+ARG realtimeid=""
+
+# Making the group inside container have the same ID as the host. This is necessary
+# for I/O
+RUN groupmod -g $videoid video
+RUN groupmod -g $audioid audio
+# Some systems uses either dialout or uucp for devices.
+RUN if [ "$dialoutid" = "" ]; then echo  ; else groupmod -g $dialoutid dialout ; fi
+RUN if [ "$uucpid" = "" ]; then echo  ; else groupmod -g $uucpid uucp ; fi
+# If realtime support is needed
+RUN if [ "$realtimeid" = "" ] ; then echo  ; else groupmod -g $realtimeid realtime ; fi
+
+
+# Creating user and group into the container and adding it to the sudoers
+RUN useradd -u $uid $username
+RUN groupmod -g $gid $username
+RUN echo $username:$username | chpasswd
+RUN echo $username 'ALL=(ALL) ALL' >> /etc/sudoers
+
+# Adding user to necessary groups
+RUN usermod -a -G video $username
+RUN usermod -a -G audio $username
+RUN if [ "$dialoutid" = "" ] ; then echo  ; else usermod -a -G dialout $username ; fi
+RUN if [ "$uucpid" = "" ] ; then echo  ; else usermod -a -G uucp $username ; fi
+RUN if [ "$realtimeid" = "" ] ; then echo  ; else usermod -a -G realtime $username ; fi
+
+# Setting container starting directory
+WORKDIR /home/$username
+
+# Setting bash as the default shell and vim as the default editor
+ENV SHELL /bin/bash
+ENV EDITOR vim
+
+# Localization 
+ENV TZ=$locale
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# nvidia-docker hooks
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+ENV PATH /usr/local/nvidia/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}compute,utility,graphics
