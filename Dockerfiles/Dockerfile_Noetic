@@ -20,7 +20,7 @@ RUN groupmod -g $audioid audio
 RUN if [ "$dialoutid" = "" ]; then echo  ; else groupmod -g $dialoutid dialout ; fi
 RUN if [ "$uucpid" = "" ]; then echo  ; else groupmod -g $uucpid uucp ; fi
 # If realtime support is needed
-RUN if [ "$realtimeid" = "" ] ; then echo  ; else groupmod -g $realtimeid realtime ; fi
+RUN if [ "$realtimeid" = "" ] ; then echo  ; else groupadd -g $realtimeid realtime ; fi
 
 
 # Creating user and group into the container and adding it to the sudoers
