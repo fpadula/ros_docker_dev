@@ -1,3 +1,9 @@
+## Nvidia-runtime branch
+
+This branch was created in response to nvidia-docker being deprecated: https://github.com/NVIDIA/nvidia-docker.
+
+This branch will eventually merge with master once everything is working reliably.
+
 ## Usage
 
 ### Building the container image

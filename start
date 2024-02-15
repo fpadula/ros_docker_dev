@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from subprocess import run, PIPE, check_call, DEVNULL
+from subprocess import run, PIPE
 from os.path import expanduser, abspath
 from os import environ
-from socket import gethostname, gethostbyname
 
 
 def get_cmd_output(cmd: str):
@@ -68,7 +67,14 @@ def main():
         action="store_true",
     )
 
-    parsed, unknown = parser.parse_known_args()
+    parser.add_argument(
+        "-nvidia_off",
+        dest="nvidia_off",
+        help="Disables nvidia-runtime.",
+        action="store_true",
+    )
+
+    parsed, _ = parser.parse_known_args()
 
     img_name = parsed.img_name[0]
     user_name = environ.get("USER")
@@ -92,13 +98,6 @@ def main():
     else:
         homedir = abspath(expanduser(parsed.homedir)) + "/"
 
-    try:
-        check_call("nvidia-docker", stdout=DEVNULL, stderr=DEVNULL)
-        docker_type = "nvidia-docker"
-    except FileNotFoundError:
-        docker_type = "docker"
-
-    print(f"Docker type: {docker_type}")
     print(f"Image: {img_name}")
     print(f"Home dir: {homedir}")
     print(f"Kernel is realtime: {has_rt}")
@@ -111,8 +110,11 @@ def main():
         cmd_str = f"cp -r {curr_dir}/dotfiles/. {homedir}"
         run(cmd_str.split())
 
-    cmd_str = f"{docker_type} run -it "
+    cmd_str = "docker run -it "
     cmd_str += "--rm "
+    if not parsed.nvidia_off:
+        cmd_str += "--runtime=nvidia "
+        cmd_str += "--gpus all "
     cmd_str += "--privileged "
     cmd_str += f"--user={user_uid}:{user_gid} "
     cmd_str += "--ipc=host "
