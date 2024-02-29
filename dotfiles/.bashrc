@@ -20,6 +20,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/Qt/Tools/QtCreator/bin:$PATH"
 export ANACONDA_INSTALL_PATH="$ANACONDA_INSTALL_PATH"
 
+
 ## Define all the colors
 COL_USR='1;38;5;41'
 COL_DIR='1;38;5;214'
@@ -115,3 +116,5 @@ source venv/bin/activate &> /dev/null || source ../venv/bin/activate &> /dev/nul
 
 alias rl='roslaunch $(basename $(pwd)) '
 alias rr='rosrun $(basename $(pwd)) '
+
+eval "$(zoxide init --cmd cd bash)"
