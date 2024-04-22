@@ -74,6 +74,14 @@ def main():
         action="store_true",
     )
 
+    parser.add_argument(
+        "--extra",
+        dest="extra",
+        help="Additional args. Put inside double quotes",
+        action="store",
+        type=str,
+    )
+
     parsed, _ = parser.parse_known_args()
 
     img_name = parsed.img_name[0]
@@ -97,6 +105,8 @@ def main():
         homedir = f"{curr_dir}/{img_name.capitalize()}_Projects/"
     else:
         homedir = abspath(expanduser(parsed.homedir)) + "/"
+
+    extra_args = parsed.extra
 
     print(f"Image: {img_name}")
     print(f"Home dir: {homedir}")
@@ -132,8 +142,8 @@ def main():
     cmd_str += f"--env=ROS_MASTER_URI={rosmasteruri} "
     cmd_str += f"--env=ROS_IP={rosip} "
     cmd_str += "--env=TERM=xterm-256color "
-    cmd_str += "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw "
-    cmd_str += f"--volume={homedir}:/home/{user_name}/:rw "
+    cmd_str += "--volume=/tmp/.X11-unix:/tmp/.X11-unix "
+    cmd_str += f"--volume={homedir}:/home/{user_name}/ "
     cmd_str += "--volume=/dev/:/dev/ "
     cmd_str += "--volume=/etc/udev/:/etc/udev/ "
     cmd_str += f"--volume=/run/user/{user_uid}/pulse:/run/user/1000/pulse "
@@ -142,15 +152,15 @@ def main():
     cmd_str += "--ulimit nofile=1024:524288 "
     cmd_str += "--device /dev/snd:/dev/snd "
     cmd_str += f"-e PULSE_SERVER=unix:{xdg_runtime_dir}/pulse/native "
-    cmd_str += (
-        f"-v {xdg_runtime_dir}/pulse/native:{xdg_runtime_dir}/pulse/native "
-    )
-    cmd_str += (
-        f"-v {user_home_dir}/.config/pulse/cookie:/root/.config/pulse/cookie "
-    )
+    cmd_str += f"-v {xdg_runtime_dir}/pulse/native:{xdg_runtime_dir}/pulse/native "
+    cmd_str += f"-v {user_home_dir}/.config/pulse/cookie:/root/.config/pulse/cookie "
     cmd_str += f"--name {name} "
+    if extra_args is not None:
+        cmd_str += f"{extra_args} "
     cmd_str += f"{img_name} "
     cmd_str += exec_cmd
+    # print("############")
+    # print(cmd_str)
     run(cmd_str.split())
 
 
