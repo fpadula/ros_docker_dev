@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from subprocess import run, PIPE
-from os.path import expanduser, abspath
-from os import environ
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
+from os import environ, getgroups
+from os.path import abspath, expanduser
+from subprocess import PIPE, run
 
 
 def get_cmd_output(cmd: str):
@@ -108,12 +108,15 @@ def main():
 
     extra_args = parsed.extra
 
+    print("##############################")
     print(f"Image: {img_name}")
     print(f"Home dir: {homedir}")
     print(f"Kernel is realtime: {has_rt}")
     print(f"User UID: {user_uid}")
     print(f"User GID: {user_gid}")
     print(f"Command to execute: {exec_cmd}")
+    print(f"Nvidia runtime: {not parsed.nvidia_off}")
+    print("##############################")
 
     # Syncinc dotfile folder:
     if not parsed.ic:
@@ -121,19 +124,37 @@ def main():
         run(cmd_str.split())
 
     cmd_str = "docker run -it "
+    # We use rm option because we want the container to be deleted after use
     cmd_str += "--rm "
+
+    # Nvidia runtime is the updated way to run docker with nvidia gpus
     if not parsed.nvidia_off:
         cmd_str += "--runtime=nvidia "
         cmd_str += "--gpus all "
     cmd_str += "--privileged "
+
+    # We will log as ourselfs inside the container
     cmd_str += f"--user={user_uid}:{user_gid} "
+    cmd_str += "-v /etc/group:/etc/group:ro "
+    cmd_str += "-v /etc/passwd:/etc/passwd:ro "
+    cmd_str += "-v /etc/shadow:/etc/shadow:ro "
+    cmd_str += "-v /etc/sudoers.d:/etc/sudoers.d:ro "
+    cmd_str += "-v /tmp/.X11-unix:/tmp/.X11-unix:rw "
+
+    # The folder specified in homedir parameter will be mounted as our home
+    cmd_str += f"-v {homedir}:/home/{user_name}/ "
+
+    # Making sure we can use system devices and use audio devices
+    cmd_str += "-v /dev/:/dev/ "
+    cmd_str += "-v /etc/udev/:/etc/udev/ "
+    cmd_str += f"-v /run/user/{user_uid}/pulse:/run/user/1000/pulse "
+    cmd_str += f"-v {xdg_runtime_dir}/pulse/native:{xdg_runtime_dir}/pulse/native "
+    cmd_str += f"-v {user_home_dir}/.config/pulse/cookie:/root/.config/pulse/cookie "
+    cmd_str += f"-e PULSE_SERVER=unix:{xdg_runtime_dir}/pulse/native "
+    for gid in getgroups():
+        cmd_str += f"--group-add {gid} "
+
     cmd_str += "--ipc=host "
-    cmd_str += "--group-add video "
-    cmd_str += "--group-add audio "
-    cmd_str += "--group-add dialout "
-    cmd_str += "--group-add uucp "
-    if has_rt:
-        cmd_str += "--group-add realtime "
     cmd_str += "--ulimit rtprio=99 "
     cmd_str += "--ulimit memlock=102400 "
     cmd_str += "--cap-add=sys_nice "
@@ -142,25 +163,14 @@ def main():
     cmd_str += f"--env=ROS_MASTER_URI={rosmasteruri} "
     cmd_str += f"--env=ROS_IP={rosip} "
     cmd_str += "--env=TERM=xterm-256color "
-    cmd_str += "--volume=/tmp/.X11-unix:/tmp/.X11-unix "
-    cmd_str += f"--volume={homedir}:/home/{user_name}/ "
-    cmd_str += "--volume=/dev/:/dev/ "
-    cmd_str += "--volume=/etc/udev/:/etc/udev/ "
-    cmd_str += f"--volume=/run/user/{user_uid}/pulse:/run/user/1000/pulse "
     cmd_str += f"--workdir=/home/{user_name}/ "
     cmd_str += "--network host "
     cmd_str += "--ulimit nofile=1024:524288 "
-    cmd_str += "--device /dev/snd:/dev/snd "
-    cmd_str += f"-e PULSE_SERVER=unix:{xdg_runtime_dir}/pulse/native "
-    cmd_str += f"-v {xdg_runtime_dir}/pulse/native:{xdg_runtime_dir}/pulse/native "
-    cmd_str += f"-v {user_home_dir}/.config/pulse/cookie:/root/.config/pulse/cookie "
     cmd_str += f"--name {name} "
     if extra_args is not None:
         cmd_str += f"{extra_args} "
     cmd_str += f"{img_name} "
     cmd_str += exec_cmd
-    # print("############")
-    # print(cmd_str)
     run(cmd_str.split())
 
 

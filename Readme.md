@@ -16,15 +16,8 @@ docker build \
 --build-arg locale=Pacific/Auckland \
 --build-arg base_ros_img=fpadula/noetic_base \
 --build-arg username=$USER \
---build-arg uid=$UID \
---build-arg gid=$(id -g ${USER}) \
---build-arg videoid=$(getent group video | awk -F: '{printf "%d", $3}') \
---build-arg audioid=$(getent group audio | awk -F: '{printf "%d", $3}') \
---build-arg dialoutid=$(getent group dialout | awk -F: '{printf "%d", $3}') \
 -t noetic_dev -f Dockerfile_Noetic .
 ```
-
-Note: `dialout` group may not be present in some systems, being replaced by `uucp`. So change `dialoutid` and `dialout` to `uucpid` and `uucp` respectivelly in the script.
 
 ---
 
@@ -34,7 +27,7 @@ Note: `dialout` group may not be present in some systems, being replaced by `uuc
 ## start
 The `start` script will start a ROS container and mount a specific folder (specified by the `--homedir` parameter) inside the container's home folder. Note that while the container is not permanent, any changes made to the projects folders will persist. When using the start script, everything inside the folder `dotfiles` will be copied to the container's home folder.
 
-The user password for the container is the same as the username. So if the username inside the container is `ros_pc`, the password will be `ros_pc`.
+The user password for the container is the same as in the base PC, since all the files inside `/etc/passwd` are mounted.
 
 Run `./start -h` to get details about the parameters.
 
