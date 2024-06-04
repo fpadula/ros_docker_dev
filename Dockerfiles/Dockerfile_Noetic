@@ -1,11 +1,9 @@
 ARG base_ros_img
-ARG username
-ARG locale
-
 FROM $base_ros_img
 
 
 # Setting container starting directory
+ARG username
 WORKDIR /home/$username
 
 # Setting bash as the default shell and vim as the default editor
@@ -13,8 +11,12 @@ ENV SHELL /bin/bash
 ENV EDITOR vim
 
 # Localization 
+ARG locale
 ENV TZ=$locale
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Adding user to sudoers
+RUN echo "$username ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \

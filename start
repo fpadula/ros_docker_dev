@@ -133,7 +133,7 @@ def main():
         cmd_str += "--gpus all "
     cmd_str += "--privileged "
 
-    # We will log as ourselfs inside the container
+    # We will log as ourselves inside the container
     cmd_str += f"--user={user_uid}:{user_gid} "
     cmd_str += "-v /etc/group:/etc/group:ro "
     cmd_str += "-v /etc/passwd:/etc/passwd:ro "
