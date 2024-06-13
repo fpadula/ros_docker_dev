@@ -2,7 +2,7 @@
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from os import environ, getgroups
-from os.path import abspath, expanduser
+from os.path import abspath, expanduser, realpath
 from subprocess import PIPE, run
 
 
@@ -100,7 +100,8 @@ def main():
     xdg_runtime_dir = environ.get("XDG_RUNTIME_DIR")
     user_home_dir = environ.get("HOME")
 
-    curr_dir = get_cmd_output("pwd")
+    # curr_dir = get_cmd_output("pwd")
+    curr_dir = "/".join(realpath(__file__).split("/")[:-1])
     if not parsed.homedir:
         homedir = f"{curr_dir}/{img_name.capitalize()}_Projects/"
     else:
