@@ -1,5 +1,3 @@
-## Nvidia-runtime branch
-
 ## Usage
 
 ### Dockerfiles description
