@@ -6,11 +6,21 @@ from os.path import abspath, expanduser, realpath
 from subprocess import PIPE, run
 
 
-def get_cmd_output(cmd: str):
-    return run(cmd.split(), stdout=PIPE).stdout.decode("utf-8").strip()
+def get_cmd_output(cmd: str) -> str:
+    """Runs a command and returns its output
+
+    Args:
+        cmd (str): command to be executed
+
+    Returns:
+        std: The command output
+    """
+    return run(cmd.split(), stdout=PIPE, check=False).stdout.decode("utf-8").strip()
 
 
 def main():
+    """Main function
+    """
     parser = ArgumentParser(
         description="Start docker container for ROS development.",
         formatter_class=ArgumentDefaultsHelpFormatter,
@@ -122,7 +132,7 @@ def main():
     # Syncinc dotfile folder:
     if not parsed.ic:
         cmd_str = f"cp -r {curr_dir}/dotfiles/. {homedir}"
-        run(cmd_str.split())
+        run(cmd_str.split(), check=False)
 
     cmd_str = "docker run -it "
     # We use rm option because we want the container to be deleted after use
@@ -172,7 +182,7 @@ def main():
         cmd_str += f"{extra_args} "
     cmd_str += f"{img_name} "
     cmd_str += exec_cmd
-    run(cmd_str.split())
+    run(cmd_str.split(), check=False)
 
 
 if __name__ == "__main__":
